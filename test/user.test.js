@@ -1,7 +1,8 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
 import { logger } from "../src/application/logging.js";
-import { createTestUser, removeTestUser } from "./test-util.js";
+import { createTestUser, getTestUser, removeTestUser } from "./test-util.js";
+import bcrypt from "bcrypt";
 
 describe("POST /api/users", () => {
     afterEach(async () => {
@@ -132,5 +133,107 @@ describe("GET /api/users/current", () => {
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
+    });
+});
+
+describe("PATCH /api/users/current", () => {
+    beforeEach(async () => {
+        await createTestUser();
+    });
+
+    afterEach(async () => {
+        await removeTestUser();
+    });
+
+    it("should can update user", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "token123")
+            .send({
+                name: "Otong Surotong Marotong",
+                password: "passwordbaru",
+            });
+
+        logger.info(result.body);
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.username).toBe("otong123");
+        expect(result.body.data.name).toBe("Otong Surotong Marotong");
+
+        const user = await getTestUser();
+        expect(await bcrypt.compare("passwordbaru", user.password)).toBe(true);
+    });
+
+    it("should can update user name", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "token123")
+            .send({
+                name: "Otong Surotong Marotong",
+            });
+
+        logger.info(result.body);
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.username).toBe("otong123");
+        expect(result.body.data.name).toBe("Otong Surotong Marotong");
+    });
+
+    it("should can update user", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "token123")
+            .send({
+                password: "passwordbaru",
+            });
+
+        logger.info(result.body);
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.username).toBe("otong123");
+
+        const user = await getTestUser();
+        expect(await bcrypt.compare("passwordbaru", user.password)).toBe(true);
+    });
+
+    it("should reject if request in not valid", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "salah")
+            .send({});
+
+        logger.info(result.body);
+
+        expect(result.status).toBe(401);
+    });
+});
+
+describe("DELETE /api/users/logout", () => {
+    beforeEach(async () => {
+        await createTestUser();
+    });
+
+    afterEach(async () => {
+        await removeTestUser();
+    });
+
+    it("should can user logout", async () => {
+        const result = await supertest(web)
+            .delete("/api/users/logout")
+            .set("Authorization", "token123");
+
+        expect(result.status).toBe(200);
+        expect(result.body.data).toBe("OK");
+
+        const user = await getTestUser();
+        expect(user.token).toBeNull();
+    });
+
+    it("should reject logout if token is invalid", async () => {
+        const result = await supertest(web)
+            .delete("/api/users/logout")
+            .set("Authorization", "salah");
+
+        expect(result.status).toBe(401);
     });
 });
