@@ -1,3 +1,4 @@
+import { logger } from "../application/logging.js";
 import contactService from "../service/contact-service.js";
 
 const create = async (req, res, next) => {
@@ -56,9 +57,32 @@ const remove = async (req, res, next) => {
     }
 };
 
+const search = async (req, res, next) => {
+    try {
+        logger.info(req.query);
+        const user = req.user;
+        const request = {
+            name: req.query.name,
+            email: req.query.email,
+            phone: req.query.phone,
+            size: req.query.size,
+            page: req.query.page,
+        };
+
+        const result = await contactService.search(user, request);
+        res.status(200).json({
+            data: result.data,
+            paging: result.paging,
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
 export default {
     create,
     get,
     update,
     remove,
+    search,
 };

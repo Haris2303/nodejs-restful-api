@@ -55,3 +55,52 @@ export const getTestContact = async () => {
         },
     });
 };
+
+export const createManyTestContact = async () => {
+    for (let i = 0; i < 15; i++) {
+        await prismaClient.contact.create({
+            data: {
+                username: `otong123`,
+                first_name: `test ${i}`,
+                last_name: `test ${i}`,
+                email: `test${i}@gmail.com`,
+                phone: `0812223344${i}`,
+            },
+        });
+    }
+};
+
+export const removeAllTestAddresses = async () => {
+    await prismaClient.address.deleteMany({
+        where: {
+            contact: {
+                username: "otong123",
+            },
+        },
+    });
+};
+
+export const createTestAddress = async () => {
+    const contact = await getTestContact();
+
+    await prismaClient.address.create({
+        data: {
+            contact_id: contact.id,
+            street: "Jalan Otong",
+            city: "Kota Otong",
+            province: "Province Otong",
+            country: "Indo",
+            postal_code: "12345",
+        },
+    });
+};
+
+export const getTestAddress = async () => {
+    return prismaClient.address.findFirst({
+        where: {
+            contact: {
+                username: "otong123",
+            },
+        },
+    });
+};
