@@ -1,4 +1,4 @@
-import addressService from "../service/address-service";
+import addressService from "../service/address-service.js";
 
 const create = async (req, res, next) => {
     try {
@@ -65,9 +65,25 @@ const remove = async (req, res, next) => {
     }
 };
 
+const list = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const contactId = req.params.contactId;
+
+        const result = await addressService.list(user, contactId);
+
+        res.status(200).json({
+            data: result,
+        });
+    } catch (e) {
+        next(e);
+    }
+};
+
 export default {
     create,
     get,
     update,
     remove,
+    list,
 };

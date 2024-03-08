@@ -1,0 +1,145 @@
+##################################
+#       USERS API
+##################################
+
+# Register Users
+POST http://localhost:3000/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "martono",
+    "password": "martono123",
+    "name": "Martono Sartono"
+}
+
+# Login users
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+Accept: application/jsons
+
+{
+    "username": "martono",
+    "password": "martono123"
+}
+
+# Get Current Users
+GET http://localhost:3000/api/users/current
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+# Update Users
+PATCH http://localhost:3000/api/users/current
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+{
+    "name": "Martono Sartono Martino Sartino"
+}
+
+# Logout Users
+DELETE http://localhost:3000/api/users/logout
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+
+#######################################
+#       CONTACTS API
+#######################################
+
+# Create contact
+POST http://localhost:3000/api/contacts
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+{
+    "first_name": "Miya",
+    "last_name": "Khalif",
+    "email": "miya@gmail.com",
+    "phone": "0812343"
+}
+
+# Search Contacts
+GET http://localhost:3000/api/contacts
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+# Get Detail Contact
+GET http://localhost:3000/api/contacts/641
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+# Update contact
+PUT http://localhost:3000/api/contacts/641
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+{
+    "first_name": "Badang",
+    "last_name": "Strong",
+    "email": "badang@gmail.com",
+    "phone": "0812343"
+}
+
+# Delete contact
+DELETE http://localhost:3000/api/contacts/641
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+#######################################
+#       ADDRESS API
+#######################################
+
+# Create Address
+POST http://localhost:3000/api/contacts/643/addresses
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+{
+    "street": "Jalan Lubang",
+    "city": "Jayapura",
+    "province": "Papua Barat",
+    "country": "Indonesia",
+    "postal_code": "13431"
+}
+
+# List Addresses
+GET http://localhost:3000/api/contacts/643/addresses
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+# Get Address
+GET http://localhost:3000/api/contacts/643/addresses/89
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+# Update Address
+PUT http://localhost:3000/api/contacts/643/addresses/90
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
+
+{
+    "street": "Jalan Kece",
+    "city": "Jayapura",
+    "province": "Papua Barat",
+    "country": "Indonesia",
+    "postal_code": "13431"
+}
+
+# Remove Address
+DELETE http://localhost:3000/api/contacts/643/addresses/89
+Content-Type: application/json
+Accept: application/jsons
+Authorization: 1e9473e4-b18d-43a8-9ef0-325f46d97981
